@@ -1,11 +1,25 @@
-
 import 'dart:convert';
 
 import '../../utils/constants.dart';
+import '../../utils/core.dart';
 import '../model/bus_response.dart';
 
-
 class GetBusDataSource {
+
+  //Calling Api
+  // Future<BusResponse> getBusInfo() async {
+  // try {
+  // var response = await CoreApplication().dio.get("/dummyApi");
+  // return BusResponse.fromJson(response.data);
+  // } on Exception catch (e) {
+  // AppLogger.log("Bus - Dio Error: $e");
+  // return BusResponse.withError(errorStr);
+  // } on Error catch (e) {
+  // AppLogger.log("Bus - Error: $e");
+  // return BusResponse.withError(errorStr);
+  // }
+  // }
+
   var errorStr = errorMsg;
   BusResponse getBusesData() {
     var response = """{
@@ -125,7 +139,7 @@ class GetBusDataSource {
 
 
     }""";
-     Map<String, dynamic> jsonMap= json.decode(response.toString());
+    Map<String, dynamic> jsonMap = json.decode(response.toString());
     return BusResponse.fromJson(jsonMap);
   }
 }
