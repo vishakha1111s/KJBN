@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:untitled2/lib/presentation/widget/bus_common_widgets.dart';
+import 'package:untitled2/lib/utils/core.dart';
 
 import '../data/repositories/bus_repository.dart';
 import '../domain/usecases/get_bus.dart';
@@ -9,7 +11,6 @@ import '../utils/constants.dart';
 import 'bloc/bus_bloc.dart';
 import 'bloc/bus_event.dart';
 import 'bloc/bus_state.dart';
-
 
 class BusPage extends StatefulWidget {
   const BusPage({Key? key}) : super(key: key);
@@ -26,6 +27,25 @@ class _BusPageState extends State<BusPage> {
   void initState() {
     _newsBloc.add(LoadBusEvent());
     super.initState();
+    _getLocation();
+  }
+
+  Future<void> _getLocation() async {
+    try {
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          return;
+        }
+      }
+      if (permission == LocationPermission.deniedForever) {
+        return;
+      }
+
+    } catch (e) {
+      AppLogger.log(e.toString());
+    }
   }
 
   @override
@@ -116,12 +136,11 @@ class BusRouteCard extends StatelessWidget {
                 for (final timing in routeTimings ?? [])
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
-
                     child: Visibility(
-                      visible:  ((parseTime(timing.tripStartTime).hour <
-                          DateTime.now().hour) ||
+                      visible: ((parseTime(timing.tripStartTime).hour <
+                              DateTime.now().hour) ||
                           ((parseTime(timing.tripStartTime).hour <
-                              DateTime.now().hour) &&
+                                  DateTime.now().hour) &&
                               (parseTime(timing.tripStartTime).minute <
                                   DateTime.now().minute))),
                       child: Row(
@@ -146,6 +165,4 @@ class BusRouteCard extends StatelessWidget {
       ),
     );
   }
-
-
 }
