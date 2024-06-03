@@ -1,90 +1,81 @@
 class BusResponse {
-  List<RouteInfo>? routeInfo;
-  Map<String, List<RouteTiming>>? routeTimings;
-  String? errors;
+  final String? type;
+  final String? id;
+  final String? vehicleId;
+  final String? naptanId;
+  final String? stationName;
+  final String? lineId;
+  final String? lineName;
+  final String? direction;
+  final String? destinationNaptanId;
+  final String? destinationName;
+  final String? timestamp;
+  final String? currentLocation;
+  final String? towards;
+  final String? expectedArrival;
+  final String? timeToLive;
+  final String? modeName;
+  final String? errors;
 
   BusResponse({
-    this.routeInfo,
-    this.routeTimings,
+    this.type,
+    this.id,
+    this.vehicleId,
+    this.naptanId,
+    this.stationName,
+    this.lineId,
+    this.lineName,
+    this.direction,
+    this.destinationNaptanId,
+    this.destinationName,
+    this.timestamp,
+    this.currentLocation,
+    this.towards,
+    this.expectedArrival,
+    this.timeToLive,
+    this.modeName,
     this.errors,
   });
 
   factory BusResponse.fromJson(Map<String, dynamic> json) => BusResponse(
-        routeInfo: List<RouteInfo>.from(
-            json["routeInfo"].map((x) => RouteInfo.fromJson(x))),
-        routeTimings: Map.from(json["routeTimings"]).map((k, v) =>
-            MapEntry<String, List<RouteTiming>>(k,
-                List<RouteTiming>.from(v.map((x) => RouteTiming.fromJson(x))))),
-        errors: json["errors"],
-      );
+    type: json['\$type'],
+    id: json['id'],
+    vehicleId: json['vehicleId'],
+    naptanId: json['naptanId'],
+    stationName: json['stationName'],
+    lineId: json['lineId'],
+    lineName: json['lineName'],
+    direction: json['direction'],
+    destinationNaptanId: json['destinationNaptanId'],
+    destinationName: json['destinationName'],
+    timestamp: json['timestamp'],
+    currentLocation: json['currentLocation'],
+    towards: json['towards'],
+    expectedArrival: json['expectedArrival'],
+    timeToLive: json['timeToLive'],
+    modeName: json['modeName'],
+    errors: json["errors"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    '\$type': type,
+    'id': id,
+    'vehicleId': vehicleId,
+    'naptanId': naptanId,
+    'stationName': stationName,
+    'lineId': lineId,
+    'lineName': lineName,
+    'direction': direction,
+    'destinationNaptanId': destinationNaptanId,
+    'destinationName': destinationName,
+    'timestamp': timestamp,
+    'currentLocation': currentLocation,
+    'towards': towards,
+    'expectedArrival': expectedArrival,
+    'timeToLive': timeToLive,
+    'modeName': modeName,
+  };
 
   factory BusResponse.withError(String error) =>
-      BusResponse(errors: error, routeInfo: [], routeTimings: {});
-
-  Map<String, dynamic> toJson() => {
-        "routeInfo": List<dynamic>.from(routeInfo ?? [].map((x) => x.toJson())),
-        "routeTimings": Map.from(routeTimings ?? {}).map((k, v) =>
-            MapEntry<String, dynamic>(
-                k, List<dynamic>.from(v.map((x) => x.toJson())))),
-      };
-}
-
-class RouteInfo {
-  String? id;
-  String? name;
-  String? source;
-  String? tripDuration;
-  String? destination;
-  String? icon;
-
-  RouteInfo({
-    this.id,
-    this.name,
-    this.source,
-    this.tripDuration,
-    this.destination,
-    this.icon,
-  });
-
-  factory RouteInfo.fromJson(Map<String, dynamic> json) => RouteInfo(
-        id: json["id"],
-        name: json["name"],
-        source: json["source"],
-        tripDuration: json["tripDuration"],
-        destination: json["destination"],
-        icon: json["icon"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "source": source,
-        "tripDuration": tripDuration,
-        "destination": destination,
-        "icon": icon,
-      };
-}
-
-class RouteTiming {
-  int? totalSeats;
-  int? available;
-  String? tripStartTime;
-
-  RouteTiming({
-    this.totalSeats,
-    this.available,
-    this.tripStartTime,
-  });
-
-  factory RouteTiming.fromJson(Map<String, dynamic> json) => RouteTiming(
-        totalSeats: json["totalSeats"],
-        available: json["available"],
-        tripStartTime: json["tripStartTime"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "totalSeats": totalSeats,
-        "available": available,
-        "tripStartTime": tripStartTime,
-      };
+      BusResponse(errors: error);
 }

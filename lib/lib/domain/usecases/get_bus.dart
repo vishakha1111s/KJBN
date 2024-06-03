@@ -8,7 +8,7 @@ class GetBus {
 
   GetBus(this.repository);
 
-  Future<BusModel> call() async {
+  Future<BusList> call() async {
     return repository.fetchBus();
   }
 }

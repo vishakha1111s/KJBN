@@ -1,145 +1,28 @@
-import 'dart:convert';
-
-import '../../utils/constants.dart';
 import '../../utils/core.dart';
 import '../model/bus_response.dart';
 
 class GetBusDataSource {
 
-  //Calling Api
-  // Future<BusResponse> getBusInfo() async {
-  // try {
-  // var response = await CoreApplication().dio.get("/dummyApi");
-  // return BusResponse.fromJson(response.data);
-  // } on Exception catch (e) {
-  // AppLogger.log("Bus - Dio Error: $e");
-  // return BusResponse.withError(errorStr);
-  // } on Error catch (e) {
-  // AppLogger.log("Bus - Error: $e");
-  // return BusResponse.withError(errorStr);
-  // }
-  // }
+  // Calling Api
+  Future<List<BusResponse>> getBusesData() async {
+    try {
+      var response = await CoreApplication().dio.get("/Vehicle/200/Arrivals",
+          queryParameters: {
 
-  var errorStr = errorMsg;
-  BusResponse getBusesData() {
-    var response = """{
-        "routeInfo": [
-          {
-            "id": "r002",
-            "name": "k-12",
-            "source": "Yashwantpur",
-            "tripDuration": "2hrs",
-            "destination": "Marathahalli",
-            "icon": "http://"
-          },
-          {
-            "id": "r003",
-            "name": "k-11",
-            "source": "Koramangala",
-            "tripDuration": "45 min",
-            "destination": "Bomanhalli",
-            "icon": "http://"
-          },
-          {
-            "id": "r004",
-            "name": "k-14",
-            "source": "E City",
-            "tripDuration": "1hrs",
-            "destination": "Silk Board",
-            "icon": "http://"
-          },
-          {
-            "id": "r001",
-            "name": "R-1",
-            "source": "Marathahalli",
-            "tripDuration": "2hrs",
-            "destination": "E City",
-            "icon": "http://"
-          },
-          {
-            "id": "r005",
-            "name": "G-12",
-            "tripDuration": "2hrs",
-            "source": "Koramangala",
-            "destination": "E City",
-            "icon": "http://"
-          }
-        ],
-        "routeTimings": {
-          "r002": [
-            {
-              "totalSeats": 13,
-              "available": 0,
-              "tripStartTime": "18:40"
-            },
-            {
-              "totalSeats": 13,
-              "available": 0,
-              "tripStartTime": "18:48"
-            },
-            {
-              "totalSeats": 13,
-              "available": 1,
-              "tripStartTime": "19:05"
-            }
-          ],
-          "r005": [
-            {
-              "totalSeats": 13,
-              "available": 5,
-              "tripStartTime": "19:10"
-            },
-            {
-              "totalSeats": 13,
-              "available": 0,
-              "tripStartTime": "19:00"
-            },
-            {
-              "totalSeats": 13,
-              "available": 1,
-              "tripStartTime": "19:05"
-            }
-          ],
-          "r001": [],
-          "r004": [
-            {
-              "totalSeats": 13,
-              "available": 5,
-              "tripStartTime": "14:55"
-            },
-            {
-              "totalSeats": 13,
-              "available": 0,
-              "tripStartTime": "15:00"
-            },
-            {
-              "totalSeats": 13,
-              "available": 1,
-              "tripStartTime": "15:05"
-            }
-          ],
-          "r003": [
-            {
-              "totalSeats": 12,
-              "available": 10,
-              "tripStartTime": "15:55"
-            },
-            {
-              "totalSeats": 12,
-              "available": 9,
-              "tripStartTime": "20:00"
-            },
-            {
-              "totalSeats": 12,
-              "available": 1,
-              "tripStartTime": "19:05"
-            }
-          ]
-        }
+            "apiKey": "11d4cd5e95b54423901d72b8167fe73a"
+          });
+      print("LL, ${response.data}");
+      List<dynamic> data = response.data;
 
 
-    }""";
-    Map<String, dynamic> jsonMap = json.decode(response.toString());
-    return BusResponse.fromJson(jsonMap);
+      return data.map((busJson) => BusResponse.fromJson(busJson)).toList();
+
+    } on Exception catch (e) {
+      AppLogger.log("Bus - Dio Error: $e");
+      return [BusResponse.withError(e.toString())];
+    } on Error catch (e) {
+      AppLogger.log("Bus - Error: $e");
+     return [BusResponse.withError(e.toString())];
+    }
   }
 }

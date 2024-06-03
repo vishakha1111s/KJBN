@@ -25,11 +25,11 @@ class CoreApplication {
 
   Future<Map<String, dynamic>> get(
       String uri, Map<String, dynamic>? queryParams) async {
-    var url = Uri.https('https://newsapi.org',
-        '/v2/everything', queryParams);
+    var url = Uri.https('https://api.tfl.gov.uk',
+        '/Vehicle/200/Arrivals', queryParams);
 
     var response = await http.get(url, headers: {
-      'apiKey': "11d4cd5e95b54423901d72b8167fe73a"
+      'apiKey': "60a7723f26f84f5e82532e07f47b119d"
     });
     if (response.statusCode == 200) {
       return convert.jsonDecode(response.body) as Map<String, dynamic>;
@@ -45,7 +45,7 @@ class CoreApplication {
         sendTimeout: sendTimeout,
         receiveTimeout: 20000,
         //ms
-        baseUrl: "https://newsapi.org"));
+        baseUrl: "https://api.tfl.gov.uk"));
 
     dio.interceptors.add(AppInterceptors());
 
@@ -93,7 +93,7 @@ class AppInterceptors extends InterceptorsWrapper {
         tag: "API logger");
     if (!options.headers.containsKey("apiKey")) {
       options.headers["apiKey"] =
-      "11d4cd5e95b54423901d72b8167fe73a";
+      "60a7723f26f84f5e82532e07f47b119d";
     }
     printWrapped(toCurlCmd(options), "API logger");
     handler.next(options);

@@ -80,7 +80,7 @@ class _BusPageState extends State<BusPage> {
               ),
             ),
             body: ListView.builder(
-              itemCount: state.busModel?.routeInfo?.length ?? 0,
+              itemCount: state.busModel?.busmodel.length,
               itemBuilder: (context, index) {
                 return BusRouteCard(state: state, index: index);
               },
@@ -102,62 +102,41 @@ class BusRouteCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final routeInfo = state.busModel?.routeInfo?[index];
-    final routeTimings = state.busModel?.routeTimings?[routeInfo?.id ?? ''];
+    final routeInfo = state.busModel?.busmodel[index].vehicleId;
     return Card(
       margin: EdgeInsets.all(10),
       elevation: padding_4,
       child: Column(
         children: <Widget>[
           ListTile(
-            leading: CircleAvatar(
-              backgroundImage: NetworkImage(routeInfo?.icon ?? ''),
-            ),
             title: Text(
-              routeInfo?.name ?? '',
+              routeInfo ?? '',
               style: Theme.of(context).textTheme.displayLarge,
             ),
-            subtitle: Text('$busId ${routeInfo?.id ?? ''}'),
+            subtitle: Text('$busId ${routeInfo?? ''}'),
           ),
           Padding(
             padding: const EdgeInsets.all(font_16),
             child: Column(
               children: <Widget>[
+                commonRowWidget(
+                    Icons.accessible_sharp,
+                    'Mode: ${state.busModel?.busmodel[index].modeName ?? ""}',
+                    Colors.red),
+                commonRowWidget(
+                    Icons.directions,
+                    'Direction: ${state.busModel?.busmodel[index].direction ?? ""}',
+                    Colors.red),
                 commonRowWidget(Icons.location_on,
-                    '$source ${routeInfo?.source ?? ""}', Colors.green),
+                    '$source ${state.busModel?.busmodel[index].stationName ?? ""}', Colors.green),
                 commonRowWidget(
                     Icons.location_on,
-                    '$destination ${routeInfo?.destination ?? ""}',
+                    '$destination ${state.busModel?.busmodel[index].destinationName?? ""}',
                     Colors.yellow),
                 commonRowWidget(
                     Icons.av_timer,
-                    'Trip Duration: ${routeInfo?.tripDuration ?? ""}',
+                    'Trip Duration: ${state.busModel?.busmodel[index].timeToStation ?? ""}',
                     Colors.red),
-                for (final timing in routeTimings ?? [])
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Visibility(
-                      visible: ((parseTime(timing.tripStartTime).hour <
-                              DateTime.now().hour) ||
-                          ((parseTime(timing.tripStartTime).hour <
-                                  DateTime.now().hour) &&
-                              (parseTime(timing.tripStartTime).minute <
-                                  DateTime.now().minute))),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          commonRowWidget(
-                              Icons.access_time,
-                              'Trip Start Time: ${timing.tripStartTime ?? ""}',
-                              Colors.red),
-                          commonRowWidget(
-                              Icons.event_seat,
-                              'Available Seats: ${timing.available ?? 0}',
-                              Colors.green),
-                        ],
-                      ),
-                    ),
-                  ),
               ],
             ),
           ),

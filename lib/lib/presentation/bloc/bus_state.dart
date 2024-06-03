@@ -24,7 +24,7 @@ class BusLoadingState extends BusState {
 
 class BusLoadCompleteState extends BusState {
 
-  BusModel? busModel;
+  BusList? busModel;
   BusLoadCompleteState({this.busModel});
   @override
   List<Object?> get props => [];

@@ -1,39 +1,53 @@
+class BusList{
+  final List<BusModel> busmodel;
+  BusList({required this.busmodel});
+}
 class BusModel {
-  List<RouteInfo>? routeInfo;
-  Map<String, List<TimingRoute>>? routeTimings;
+  final String? type;
+  final int? id;
+  final int? operationType;
+  final String? vehicleId;
+  final String? naptanId;
+  final String? stationName;
+  final String? lineId;
+  final String? lineName;
+  final String? platformName;
+  final String? direction;
+  final String? bearing;
+  final String? destinationNaptanId;
+  final String? destinationName;
+  final String? timestamp;
+  final int? timeToStation;
+  final String? currentLocation;
+  final String? towards;
+  final String? expectedArrival;
+  final String? timeToLive;
+  final String? modeName;
+  final String? errors;
 
   BusModel({
-    this.routeInfo,
-    this.routeTimings,
-  });
-}
-
-class TimingRoute {
-  int? totalSeats;
-  int? available;
-  String? tripStartTime;
-
-  TimingRoute({
-    this.totalSeats,
-    this.available,
-    this.tripStartTime,
-  });
-}
-
-class RouteInfo {
-  String? id;
-  String? name;
-  String? source;
-  String? tripDuration;
-  String? destination;
-  String? icon;
-
-  RouteInfo({
+    this.type,
     this.id,
-    this.name,
-    this.source,
-    this.tripDuration,
-    this.destination,
-    this.icon,
+    this.operationType,
+    this.vehicleId,
+    this.naptanId,
+    this.stationName,
+    this.lineId,
+    this.lineName,
+    this.platformName,
+    this.direction,
+    this.bearing,
+    this.destinationNaptanId,
+    this.destinationName,
+    this.timestamp,
+    this.timeToStation,
+    this.currentLocation,
+    this.towards,
+    this.expectedArrival,
+    this.timeToLive,
+    this.modeName,
+    this.errors,
   });
+
 }
+

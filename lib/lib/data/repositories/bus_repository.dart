@@ -5,55 +5,48 @@ import '../model/bus_response.dart';
 
 class BusRepositoryImpl extends BusRepository {
   @override
-  Future<entity.BusModel> fetchBus() async {
-    BusResponse busResponse = GetBusDataSource().getBusesData();
-    List<entity.RouteInfo> routeInfo = [];
-    Map<String, List<RouteTiming>> routeTiming = {};
+  Future<entity.BusList> fetchBus() async {
+    List<BusResponse> busResponse = await GetBusDataSource().getBusesData();
+    String? currentLocation,
+        expectedArrival,
+        timeToLive,
+        stationName,
+        timestamp,
+        vehicleId,
+        lineName,
+        direction,
+        destinationName,
+        towards;
 
-    routeInfo = busResponse.routeInfo?.map((route) {
-          return entity.RouteInfo(
-            id: route.id ?? "",
-            name: route.name ?? "",
-            source: route.source ?? "",
-            tripDuration: route.tripDuration ?? "",
-            destination: route.destination ?? "",
-            icon: route.icon ?? "",
-          );
-        }).toList() ??
-        [];
-    Map<String, List<entity.TimingRoute>> timing = {};
+    List<entity.BusModel> busmodel = [];
 
-    busResponse.routeTimings?.forEach((key, value) {
-      if (value.isNotEmpty) {
-        timing[key] = RouteTimeMapper().mapToList(value);
-      } else {
-        routeTiming[key] = [];
-      }
-    });
-
-    // Create and return a BusModel
-    return entity.BusModel(
-      routeInfo: routeInfo,
-      routeTimings: timing,
-    );
-  }
-}
-
-//Mapper to convert RouteTiming to TimingRoute
-class RouteTimeMapper {
-  entity.TimingRoute map(RouteTiming? response) {
-    if (response != null) {
-      return entity.TimingRoute(
-          tripStartTime: response.tripStartTime,
-          available: response.available,
-          totalSeats: response.totalSeats);
-    } else {
-      return entity.TimingRoute(
-          tripStartTime: null, available: null, totalSeats: null);
+    for (int i = 0; i < (busResponse.length); i++) {
+      vehicleId = busResponse[i].vehicleId;
+      lineName = busResponse[i].lineName;
+      direction = busResponse[i].direction;
+      stationName = busResponse[i].stationName;
+      timestamp = busResponse[i].timestamp;
+      destinationName = busResponse[i].destinationName;
+      currentLocation = busResponse[i].currentLocation;
+      expectedArrival = busResponse[i].expectedArrival;
+      timeToLive = busResponse[i].timeToLive;
+      towards = busResponse[i].towards;
+      busmodel.add(entity.BusModel(
+        vehicleId: vehicleId,
+        lineName: lineName,
+        direction: direction,
+        stationName: stationName,
+        timestamp: timestamp,
+        destinationName: destinationName,
+        currentLocation: currentLocation,
+        expectedArrival: expectedArrival,
+        timeToLive: timeToLive,
+        towards: towards,
+      ));
     }
-  }
 
-  List<entity.TimingRoute> mapToList(List<RouteTiming>? routeTime) {
-    return routeTime?.map((e) => map(e))?.toList() ?? [];
+    return entity.BusList(
+      busmodel: busmodel
+    );
   }
 }

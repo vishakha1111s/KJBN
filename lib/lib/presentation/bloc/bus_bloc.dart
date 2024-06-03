@@ -16,7 +16,7 @@ class BusBloc extends Bloc<BusEvent, BusState> {
       }  else if (event is LoadBusEvent) {
         emit(BusLoadingState());
         try {
-          BusModel busModel = await _getBus.call();
+          BusList busModel = await _getBus.call();
           if (busModel != null)
             emit(BusLoadCompleteState(busModel: busModel));
           else
